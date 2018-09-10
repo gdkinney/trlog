@@ -1,0 +1,19 @@
+<!doctype html>
+<header>{% block header %}<h2>Scan a trailer at dock</h2>{% endblock %}</header>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/trlog.css') }}" />
+{% block content %}
+<form action="/dockconfirmstatus" method="POST">
+  <div class='header'>
+    <h3>Project: {{projectid}}</h3>
+    <h3>User: {{userid}}</h3><br>
+  </div><br>
+  <div class='prompt'>
+  <h1>Scan Trailer Barcode:</h1>
+  <input class="prompt" type="text" name="trailerbarcode" autofocus>
+  </div>
+  <br>
+  <input type="submit" name="submit" value="Submit" /><br><br><br>
+  <input type="submit" name="submit" value="Logout" />
+</form>
+{% endblock %}
+

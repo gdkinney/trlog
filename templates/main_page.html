@@ -1,0 +1,44 @@
+<!doctype html>
+    <header>
+	{% block header %}
+        <title>Trailer Log</title>
+		{% endblock %}
+    </header>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/trlog.css') }}" />
+	
+{% block content %}
+    <body>
+		<div>
+		  
+            <form action="/project" method="POST">
+				<div class="username">
+					<h3>User Name:</h3>
+					<input type="text" name="userid" required maxlength="20"><br>
+				</div>	
+	
+				<div class="projlist">
+					<h3>Select Project Code</h3>
+					<select name="projectid">
+					  <option value="MAP-POPA" selected>MAP-POPA</option>
+					  <option value="MAP-BODY">MAP-BODY</option>
+					  <option value="MAP-BULK">MAP-BULK</option>
+					</select>
+				</div>
+		
+				<div class="arealist">
+					<h3>Select activity:</h3>
+					<select name="activity">
+						<option value="view" selected>View Trailers</option>
+						<option value="dock">Dock Scan Confirm</option>
+						<option value="gate">Gate Confirmation</option>
+					</select>
+				</div>
+				<div>
+					<br><input type="submit" value="Submit">
+				</div>
+            </form>
+			
+        </div>
+
+    </body>
+{% endblock %}

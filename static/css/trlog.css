@@ -1,0 +1,48 @@
+input[type=text].prompt {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 2px solid black;
+	border-radius: 4px;
+}
+input[type=submit].other {
+  background-color: #cccccc;
+  border: none;
+  color: black;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+input[type=submit].gatebutton {
+  background-color: LawnGreen;
+}
+div.header {
+  border: 2px;
+  background-color: #cccccc;
+  padding: 12px 32px;
+  margin: 4px 2px;
+}
+div.status {
+  border: 2px;
+  background-color: #cccccc;
+  padding: 12px 32px;
+  margin: 4px 2px;
+  text-align: center;
+  font-size: 32px;
+}
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+td,th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
