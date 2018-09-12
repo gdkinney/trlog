@@ -10,7 +10,7 @@
     <body>
 		<div>
 		  
-            <form action="/project" method="POST">
+            <form action="{{ url_for("select_project") }}" method="POST">
 				<div class="username">
 					<h3>User Name:</h3>
 					<input type="text" name="userid" required maxlength="20"><br>

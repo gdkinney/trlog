@@ -1,5 +1,5 @@
 <!doctype html>
-<meta http-equiv="refresh" content="30;/gateconfirm" />
+<meta http-equiv="refresh" content="30;{{ url_for("scanTrailerAtGate") }}" />
   <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
   <meta http-equiv="cache-control" content="max-age=0" />
   <meta http-equiv="expires" content="0" />
@@ -24,26 +24,26 @@
 	   <th>Gate User</th>
 	   <th>Undo Depart</th>
 	 
-	 {% for trailer in trailerRecs %}
+	 {% for id in ids %}
 	   <tr>
 	     
 		 <td>
-		    {% if trailerRecs[trailer]['gatets'] == None %}
-				<form action="/gateconfirmstatus" method="POST">
-					<input class="gatebutton" title='Depart Trailer' type='submit' name='submit' value='{{trailerRecs[trailer]['number']}}' />
+		    {% if trailerRecs[id]['gatets'] == None %}
+				<form action="{{ url_for("statusGateScan") }}" method="POST">
+					<input class="gatebutton" title='Depart Trailer' type='submit' name='submit' value='{{trailerRecs[id]['number']}}' />
 				</form>
 			{% endif %}
 		 </td>
-		 <td><h3>{{trailerRecs[trailer]['number']}}</h3></td>
+		 <td><h3>{{trailerRecs[id]['number']}}</h3></td>
 
-		 <td>{{trailerRecs[trailer]['dockts']}}</td>
-		 <td>{{trailerRecs[trailer]['dockby']}}</td>
-		 <td><h3>{{trailerRecs[trailer]['gatets']}}</h3></td>
-		 <td><h3>{{trailerRecs[trailer]['gateby']}}</h3></td>
+		 <td>{{trailerRecs[id]['dockts']}}</td>
+		 <td>{{trailerRecs[id]['dockby']}}</td>
+		 <td><h3>{{trailerRecs[id]['gatets']}}</h3></td>
+		 <td><h3>{{trailerRecs[id]['gateby']}}</h3></td>
 		 <td>
-			{% if trailerRecs[trailer]['gatets'] != None %}
-			  <form action="/gateundodepart" method="POST">
-			    <input class="gatebutton" title="Undo Depart" type="submit" name="undo" value="{{trailerRecs[trailer]['number']}}-{{trailerRecs[trailer]['id']}}" />
+			{% if trailerRecs[id]['gatets'] != None %}
+			  <form action="{{ url_for("undoGateScan") }}" method="POST">
+			    <input class="gatebutton" title="Undo Depart" type="submit" name="undo" value="{{trailerRecs[id]['number']}}-{{id}}" />
 			  </form>
 			{% endif %}
 		 </td>

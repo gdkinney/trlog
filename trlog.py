@@ -74,7 +74,10 @@ def statusDockScan() :
 @app.route('/gateconfirm')
 def scanTrailerAtGate():
     """show trailer list with 'leaving' button/scan prompt"""
-    return render_template("scan_at_gate.html", ss=session, trailerRecs=fetchTrailerRecs())
+    tRecs = fetchTrailerRecs()
+    ids   = tRecs.keys()
+    ids.sort(reverse=True)
+    return render_template("scan_at_gate.html", ss=session, trailerRecs=tRecs, ids=ids)
 
 # GATE SCAN: save gate confirm to database, display confirmation message
 @app.route('/gateconfirmstatus', methods=['POST','GET'])
@@ -94,7 +97,10 @@ def undoGateScan() :
 @app.route('/viewtrailers')
 def viewTrailerRecords():
     """show last ?? trailer records and dock/gate scan status, refreshes every 30 seconds"""
-    return render_template("view_trailer_records.html", trailerRecs=fetchTrailerRecs(), ss=session)
+    tRecs = fetchTrailerRecs()
+    ids   = tRecs.keys()
+    ids.sort(reverse=True)
+    return render_template("view_trailer_records.html", trailerRecs=tRecs, ss=session, ids=ids)
 
 # DATABASE Utilities
 
@@ -113,12 +119,12 @@ def updateTrailerDockScan(trailerid):
         if rec == None : # record does not exist
             query = 'insert into trailers (projectid,trailer,atdock,dockts,dockby) VALUES("{pid}","{tnum}",1,"{ts}","{un}")'\
                     .format(pid=session['projectid'],tnum=trailerid,ts=time.asctime(),un=session['userid'])
-            print(query)
+            #print(query)
             c.execute(query)
         else : # update existing record
             query = 'update trailers set atdock=1,dockts=\"{ts}\",dockby=\"{un}\" where id={recid}'\
                     .format(ts=time.asctime(),un=session['userid'],recid=rec)
-            print(query)
+            #print(query)
             c.execute(query)
 
         conn.commit()
@@ -143,13 +149,13 @@ def updateTrailerGateScan(userid, trailerid, undoFlag) :
                 # it's not on file, so we'll add it
                 query='insert into trailers (projectid,trailer,atgate,gatets,gateby) VALUES("{pid}","{tnum}",1,"{ts}","{un}")'\
                           .format(pid=session['projectid'],tnum=trailerid,ts=time.asctime(),un=session['userid'])
-                print(query)
+                #print(query)
                 c.execute(query)
             else:
                 # It's on file, so we'll update it with new timestamp
                 query='update trailers set atgate=1,gatets=\"{ts}\",gateby=\"{un}\" where id={recid}'\
                           .format(ts=time.asctime(), un=session['userid'], recid=rec)
-                print(query)
+                #print(query)
                 c.execute(query)
                 
             conn.commit()
@@ -160,7 +166,7 @@ def updateTrailerGateScan(userid, trailerid, undoFlag) :
         finally:
             conn.close()
     else :          
-		# should it be???
+        # should it be???
         msg = 'Undo gate scan not implemented yet!'
         
     return msg
@@ -179,14 +185,17 @@ def fetchTrailerRecs() :
         recs = c.fetchall()
         if len(recs) > 0 :
             for rec in recs :
-                trailerRecs[rec[1]] = {}
-                trailerRecs[rec[1]]['number'] = rec[1]
-                trailerRecs[rec[1]]['dockts'] = rec[4]
-                trailerRecs[rec[1]]['dockby'] = rec[7]
-                trailerRecs[rec[1]]['gatets'] = rec[5]
-                trailerRecs[rec[1]]['gateby'] = rec[8]
-                trailerRecs[rec[1]]['id'] = rec[0]
-        #print(trailerRecs)
+                trailerRecs[rec[0]] = {}
+                trailerRecs[rec[0]]['number'] = rec[1]
+                trailerRecs[rec[0]]['dockts'] = rec[4]
+                trailerRecs[rec[0]]['dockby'] = rec[7]
+                trailerRecs[rec[0]]['gatets'] = rec[5]
+                trailerRecs[rec[0]]['gateby'] = rec[8]
+                trailerRecs[rec[0]]['id'] = rec[0]
+                
+                print(rec)
+                
+        #print(recs)
     except sqlite3.Error as e :
         print(e)
     finally:
